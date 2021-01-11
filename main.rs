@@ -8,6 +8,7 @@ const MAGIC_READ_CL: u8 = IOCTL_MAGIC+ 1;
 const FAN1_ADDR: u8 = 0x10;
 const FAN2_ADDR: u8 = 0x11;
 const FAN3_ADDR: u8 = 0x12;
+const MAX_FAN_SPEED: f64 = 0xFF as f64;
 
 ioctl_read!(io_fan1_raw, MAGIC_READ_CL, FAN1_ADDR, u64);
 ioctl_read!(io_fan2_raw, MAGIC_READ_CL, FAN2_ADDR, u64);
@@ -15,7 +16,7 @@ ioctl_read!(io_fan3_raw, MAGIC_READ_CL, FAN3_ADDR, u64);
 
 fn get_fan_speed_percent(fan_raw_speed: u64) -> f64 {
     let raw_speed = (fan_raw_speed & 0xFF) as f64;
-    return ((raw_speed / 0xFF as f64) * 100 as f64) as f64
+    return ((raw_speed / MAX_FAN_SPEED) * 100 as f64) as f64
 }
 
 fn main() {
